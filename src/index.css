@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-mono: "Courier New", Courier, monospace;
+
+  /* Jarring Contrast Colors */
+  --color-glitch-cyan: #00ffff;
+  --color-glitch-magenta: #ff00ff;
+  --color-glitch-yellow: #ffff00;
+  --color-dark-void: #000000;
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--color-dark-void)] text-[var(--color-glitch-cyan)] font-sans overflow-hidden;
+    background-image: radial-gradient(circle, #111 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+}
+
+@layer utilities {
+  .glitch-border {
+    border: 2px solid var(--color-glitch-magenta);
+    box-shadow: 2px 2px 0px var(--color-glitch-cyan), -2px -2px 0px var(--color-glitch-yellow);
+  }
+  
+  .text-glitch {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .text-glitch::before, .text-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .text-glitch::before {
+    color: var(--color-glitch-magenta);
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+  }
+
+  .text-glitch::after {
+    color: var(--color-glitch-yellow);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+    left: 2px;
+  }
+
+  @keyframes glitch-anim-1 {
+    0% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, 2px); }
+    20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -2px); }
+    40% { clip-path: inset(10% 0 80% 0); transform: translate(-2px, -2px); }
+    60% { clip-path: inset(40% 0 30% 0); transform: translate(2px, 2px); }
+    80% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 2px); }
+    100% { clip-path: inset(30% 0 60% 0); transform: translate(2px, -2px); }
+  }
+
+  @keyframes glitch-anim-2 {
+    0% { clip-path: inset(10% 0 70% 0); transform: translate(2px, -2px); }
+    25% { clip-path: inset(50% 0 20% 0); transform: translate(-2px, 2px); }
+    50% { clip-path: inset(20% 0 60% 0); transform: translate(2px, -2px); }
+    75% { clip-path: inset(70% 0 10% 0); transform: translate(-2px, 2px); }
+    100% { clip-path: inset(40% 0 40% 0); transform: translate(2px, -2px); }
+  }
+
+  .static-noise {
+    position: relative;
+  }
+  
+  .static-noise::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Texture.png");
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  .scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 100;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 255, 255, 0.2) 10%, rgba(0, 0, 0, 0.1) 100%);
+    opacity: 0.1;
+    position: absolute;
+    bottom: 100%;
+    animation: scanline 8s linear infinite;
+  }
+
+  @keyframes scanline {
+    0% { bottom: 100%; }
+    100% { bottom: -100px; }
+  }
+}
